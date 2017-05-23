@@ -1,0 +1,155 @@
+programme verbes
+
+TYPE
+
+    verbe = enregistrement    //Type enregistrement avec l'infitif du verbe et son groupe. 
+        inf = chaine
+        gr = entier
+
+
+procedure remplir(var f ! texte,e : texte)
+DEBUT						//On met une liste de verbes.
+    REECRIRE(f)
+    ECRIRE(f,rire)
+    ECRIRE(f,recevoir)
+    ECRIRE(f,aller)
+    ECRIRE(f,bouillir)
+    ECRIRE(f,envoyer)
+    ECRIRE(f,peindre)
+    ECRIRE(f,habiter)
+    ECRIRE(f,payer)
+    ECRIRE(f,mourir)
+    ECRIRE(f,hair)
+    ECRIRE(f,vouloir)
+    ECRIRE(f,finir)
+    ECRIRE(f,s'amuser)
+    FERMER(f)
+    
+    REECRIRE(e)					//Un met une liste des verbes irréguliers.
+    ECRIRE(e,aller)
+    ECRIRE(e,vouloir)
+    ECRIRE(e,mourir)
+    ECRIRE(e,s'amuser)
+    ECRIRE(e,recevoir)
+    ECRIRE(e,peindre)
+    FERMER(e)
+FIN
+
+
+procedure determiner(var t : tableau de verbe, f : fichier texte, e : fichier texte)
+VAR
+
+    verbe : chaine
+    exc : chaine
+    terminaison : chaine
+    i : entier
+    isexc : booleen
+
+DEBUT
+    OUVRIR(f)
+    
+    POUR DE 1 A 13		//Pour la liste entière de verbe
+	OUVRIR(e)
+	isexc <- FAUX
+        LIRE(f,verbe)
+        t.inf <- verbe
+        termninaison <- + verbe[loungueur(verbe)-1] + verbe[loungueur(verbe)] //On prends la terminaison du verbe.
+
+
+        TANT QUE non FinDeFichier(e) FAIRE
+            LIRE(e,exc)		//On regarde si le verb est dans la liste des irreguliers.
+            SI verbe = exc ALORS isexc <- VRAI      
+        FINTANTQUE
+
+
+	si isexc alors t[i].gr <- 3		//Si il est irréguiler, il est du 3e
+	sinon si terminaison = 'er' alors t[i].gr <- 1 //Sinon, on regarde sa terminaison.
+	sinon si terminaison = 'ir' alors t[i].gr <- 2
+    FINPOUR
+FIN
+
+procedure conjuguer1(verbe :verbe, var f : text) 
+VAR
+
+   rad  :  chaine		//Cette procedure reçoit un verbe et le fichier.
+   i : entier
+
+BEGIN
+
+   POUR i de 1 a (longueur(verbe)-2)		//On prends le radical du verbe.
+	rad <- rad + verbe[i]
+   FINPOUR
+
+   ECRIRE(f,verbe & ' :')
+   ECRIRE(f,'Je ' & rad & 'e')			//Et on l'utilise pour conjuguer le verbe.
+   ECRIRE(f,'Tu ' & rad & 'es')
+   ECRIRE(f,'Il ' & rad & 'e')
+   ECRIRE(f,'Nous ' & rad & 'eons')
+   ECRIRE(f,'Vous ' & rad & 'ez')
+   ECRIRE(f,'Ils ' & rad & 'en
+   
+END;
+
+
+procedure conjuguer2(verbe :verbe, var f : text) 
+VAR
+
+   rad  :  chaine
+   i : entier
+
+BEGIN
+
+   POUR i de 1 a (longueur(verbe)-2)
+	rad <- rad + verbe[i]
+   FINPOUR
+
+   ECRIRE(f,verbe & ' :')
+   ECRIRE(f,'Je ' & rad & 'is')
+   ECRIRE(f,'Tu ' & rad & 'is')
+   ECRIRE(f,'Il ' & rad & 'it')
+   ECRIRE(f,'Nous ' & rad & 'issons')
+   ECRIRE(f,'Vous ' & rad & 'issez')
+   ECRIRE(f,'Ils ' & rad & 'issent)
+   
+END;
+
+
+
+procedure conjuguer(t : tableau de verbe,var f : text)
+
+VAR
+
+   verbeconjuge : chaine
+   i : entier
+
+DEBUT
+   REECRIRE(f);						//On va a travers tout la liste
+
+   pour i de 1 a 13 faire
+   	si t[i].gr = 1 alors conjuguer1(t[i].inf,f)	//Et on ecris dans le fichier
+	SINON t[i].gr = 2 alors conjuguer1(t[i].inf,f)	//Verbe par verbe
+	SINON conjuguer3(t[i].inf,f)			//Avec une proced. par verbe.
+   finpour
+
+   fermer(f)
+FIN
+
+
+
+//-------------------------PROGRAMME PRINCIPAL----------------------------//
+
+
+VAR
+    
+    EListe : fichier texte  (Liste des exceptions du 3e groupe.)
+    VListe : fichier texte
+    VTab : tableau de 1 a 13 de verbe
+
+DEBUT
+
+    ASSIGNER (VListe, 'verbes.txt')
+    remplir(VListe,EListe)
+    determiner(Vtab,VListe)
+    conjuguer(VTab,Cliste)
+
+FIN.
